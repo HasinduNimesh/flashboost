@@ -28,7 +28,7 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/flashboost/flashboost.git
+   git clone https://github.com/HasinduNimesh/flashboost.git
    cd flashboost
    ```
 
