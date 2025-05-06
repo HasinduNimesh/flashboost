@@ -1191,3 +1191,322 @@ body {
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
+
+/* Add these styles to your study.css file */
+
+/* Rating button states */
+.rating-button.selected {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.rating-button.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.rating-buttons.loading {
+  opacity: 0.8;
+  position: relative;
+}
+
+.rating-buttons.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(56, 161, 105, 0.3);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast-success {
+  background-color: var(--primary-color);
+  box-shadow: 0 4px 15px rgba(56, 161, 105, 0.3);
+}
+
+.toast-error {
+  background-color: #E53E3E;
+  box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+}
+
+.toast-info {
+  background-color: #3182CE;
+  box-shadow: 0 4px 15px rgba(49, 130, 206, 0.3);
+}
+
+.show-toast {
+  opacity: 1;
+}
+
+/* Study stats */
+.study-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+.stat-item i {
+  color: var(--primary-color);
+}
+
+/* Animation */
+.pulse {
+  animation: pulse 0.4s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Stats summary */
+.stats-summary {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(56, 161, 105, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  min-width: 120px;
+}
+
+.summary-label {
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-bottom: 0.25rem;
+}
+
+.summary-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Study more options */
+.study-options {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.options-label {
+  font-size: 1rem;
+  color: #718096;
+  margin-bottom: 1rem;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Special tag for non-due cards */
+.card-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgba(66, 153, 225, 0.8);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0 var(--border-radius) 0 var(--border-radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.card-tag.due {
+  background-color: rgba(56, 161, 105, 0.8);
+}
+
+.card-tag.new {
+  background-color: rgba(236, 201, 75, 0.8);
+}
+
+/* Card tag for bonus study */
+.card-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 10;
+  background-color: #3182ce;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Rating button improvements */
+.rating-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.rating-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.rating-button:active {
+  transform: translateY(-1px);
+}
+
+.rating-button.selected {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.rating-button.disabled,
+.rating-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Loading state for buttons */
+.rating-buttons.loading {
+  opacity: 0.8;
+  position: relative;
+}
+
+.rating-buttons.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(56, 161, 105, 0.3);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Animation for button feedback */
+.pulse {
+  animation: pulse 0.4s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.toast-success {
+  background-color: var(--primary-color);
+}
+
+.toast-error {
+  background-color: #e53e3e;
+}
+
+.toast-info {
+  background-color: #3182ce;
+}
+
+.show-toast {
+  opacity: 1;
+}
+
+/* Bonus study tag */
+.card-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 10;
+  background-color: #3182ce;
+  color: white;
+}
+
+/* Loading state for buttons */
+.rating-buttons.loading {
+  opacity: 0.8;
+  position: relative;
+}
+
+.rating-buttons.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(56, 161, 105, 0.3);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}

@@ -11,6 +11,9 @@ if (!isLoggedIn()) {
 // Get deck ID
 $deckId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
+// Set study mode (default to 'all' to show all cards)
+$studyMode = isset($_GET['study_mode']) ? htmlspecialchars($_GET['study_mode']) : 'all';
+
 // Get deck information if specified
 $deckInfo = null;
 if ($deckId > 0) {
@@ -543,8 +546,198 @@ if ($deckId > 0) {
                 min-width: 100px;
                 padding: 0.6rem 1rem;
             }
+            /* Improve flashcard text visibility */
+.flashcard-side {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.flashcard-front {
+    background-color: #FFFFFF;
+    color: var(--text-color);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+.flashcard-back {
+    background-color: #EBF4FF; /* Better blue background for contrast */
+    color: #1A365D; /* Darker text for better readability */
+    transform: rotateY(180deg);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+.card-content {
+    font-size: 1.5rem;
+    line-height: 1.7;
+    text-align: center;
+    max-height: 320px;
+    overflow-y: auto;
+    width: 100%;
+    padding: 15px;
+    font-weight: 500;
+    white-space: pre-line; /* Preserves line breaks in content */
+    word-wrap: break-word;
+}
+
+.flashcard-back .card-content {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Fix for highlighting text in answers */
+.flashcard-back .card-content strong,
+.flashcard-back .card-content b {
+    color: #2C5282;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 0 4px;
+    border-radius: 3px;
+}
+
+/* Fix for lists in flashcards */
+.card-content ul, 
+.card-content ol {
+    text-align: left;
+    padding-left: 2rem;
+}
+
+.card-content li {
+    margin-bottom: 8px;
+}
+/* Bonus study indicator */
+.card-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 10;
+}
+
+.card-tag.bonus {
+    background-color: #3182ce;
+    color: white;
+}
+
+/* Fix for the flashcard back appearance */
+.flashcard-back .card-content {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Fix for highlighting text in answers */
+.flashcard-back .card-content strong,
+.flashcard-back .card-content b {
+    color: #2C5282;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 0 4px;
+    border-radius: 3px;
+}
+
+/* Options group styling */
+.study-options {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.options-label {
+    font-size: 1rem;
+    color: #718096;
+    margin-bottom: 1rem;
+}
+
+/* Animation for buttons */
+.pulse {
+    animation: pulse 0.4s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+/* Make buttons more interactive with visual feedback */
+.rating-button {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.rating-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.rating-button:active {
+    transform: translateY(-1px);
+}
+
+.rating-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255,255,255,0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.rating-button:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    20% {
+        transform: scale(25, 25);
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(40, 40);
+    }
+}
+
+/* Ensure disabled buttons look disabled */
+.rating-button.disabled,
+.rating-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Prioritize clickable areas */
+.rating-button i {
+    pointer-events: none;
+}
+
+/* Fix for iOS touch events */
+.rating-buttons {
+    touch-action: manipulation;
+}
         }
-    </style>
+        </style>
 </head>
 <body>
     <header>
@@ -586,7 +779,7 @@ if ($deckId > 0) {
                 </a>
             </div>
             
-            <div id="studyApp" data-deck-id="<?php echo $deckId; ?>" class="study-container">
+            <div id="studyApp" data-deck-id="<?php echo $deckId; ?>" data-study-mode="<?php echo $studyMode; ?>" class="study-container">
                 <div class="progress-container">
                     <div class="progress-bar" style="width: 0%"></div>
                 </div>
@@ -594,23 +787,6 @@ if ($deckId > 0) {
                     <div class="spinner"></div>
                     <p>Loading your cards...</p>
                 </div>
-                
-                <!-- Flashcard will be inserted by JavaScript -->
-                <!-- For example:
-                <div class="flashcard">
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front">
-                            <div class="card-content">Front content</div>
-                        </div>
-                        <div class="flashcard-back">
-                            <div class="card-content">Back content</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="answer-buttons">
-                    <button class="btn-show-answer">Show Answer</button>
-                </div>
-                -->
             </div>
         </div>
     </main>
